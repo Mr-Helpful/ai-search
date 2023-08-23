@@ -1,19 +1,10 @@
-use crate::state::State;
-
-use super::{Decision, Search};
+use super::{Decision, Search, State};
 
 pub struct DLS<S: State, D> {
   states: Vec<(Result<S, S::ResultError>, usize)>,
   actions_for: D,
   limit: usize,
 }
-
-/*
-Behavoir upon failure:
-No states left to explore -> None
-State can't be observed -> Some(Err)
-Observation has no actions -> Some(Ok(State))
-*/
 
 impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
   type Item = Result<S, S::Error>;

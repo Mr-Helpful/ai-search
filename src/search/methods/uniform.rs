@@ -1,9 +1,6 @@
-use std::{cmp::Reverse, hash::Hash};
-
-use crate::state::State;
+use super::{Decision, Search, State, StateCost};
 use priority_queue::PriorityQueue;
-
-use super::{Decision, Search, StateCost};
+use std::{cmp::Reverse, hash::Hash};
 
 pub struct Uniform<S: State, D, C: StateCost<S>>
 where
@@ -13,13 +10,6 @@ where
   actions_for: D,
   node_cost: C,
 }
-
-/*
-Behavoir upon failure:
-No states left to explore -> None
-State can't be observed -> Some(Err)
-Observation has no actions -> Some(Ok(State))
-*/
 
 impl<S, D, C> Iterator for Uniform<S, D, C>
 where

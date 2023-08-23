@@ -1,19 +1,10 @@
-use crate::state::State;
+use super::{Decision, Search, State};
 use std::collections::VecDeque;
-
-use super::{Decision, Search};
 
 pub struct BFS<S: State, D> {
   states: VecDeque<Result<S, S::ResultError>>,
   actions_for: D,
 }
-
-/*
-Behavoir upon failure:
-No states left to explore -> None
-State can't be observed -> Some(Err)
-Observation has no actions -> Some(Ok(State))
-*/
 
 impl<S: State, D: Decision<S>> Iterator for BFS<S, D> {
   type Item = Result<S, S::Error>;

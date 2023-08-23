@@ -1,11 +1,8 @@
 use crate::state::State;
 
-pub mod bfs;
 pub mod cost;
 pub mod decision;
-pub mod dfs;
-pub mod dls;
-pub mod uniform;
+pub mod methods;
 use cost::StateCost;
 use decision::Decision;
 

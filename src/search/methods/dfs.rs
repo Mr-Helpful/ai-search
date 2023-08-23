@@ -1,18 +1,9 @@
-use crate::state::State;
-
-use super::{Decision, Search};
+use super::{Decision, Search, State};
 
 pub struct DFS<S: State, D> {
   states: Vec<Result<S, S::Error>>,
   actions_for: D,
 }
-
-/*
-Behavoir upon failure:
-No states left to explore -> None
-State can't be observed -> Some(Err)
-Observation has no actions -> Some(Ok(State))
-*/
 
 impl<S: State, D: Decision<S>> Iterator for DFS<S, D> {
   type Item = Result<S, S::Error>;
