@@ -31,4 +31,9 @@ impl<S: State, D: Decision<S>> Iterator for DFS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for DFS<S, D> {}
+impl<S: State, D: Decision<S>> Search<S> for DFS<S, D> {
+  fn restart_from(&mut self, start: S) {
+    self.states.clear();
+    self.states.push(Ok(start));
+  }
+}

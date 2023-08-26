@@ -41,4 +41,13 @@ where
   }
 }
 
-impl<S: State, D: Decision<S>, C: StateCost<S>> Search<S> for Uniform<S, D, C> where S: Hash + Eq {}
+impl<S: State, D: Decision<S>, C: StateCost<S>> Search<S> for Uniform<S, D, C>
+where
+  S: Hash + Eq,
+{
+  fn restart_from(&mut self, start: S) {
+    self.states.clear();
+    let cost = self.node_cost.cost(&start);
+    self.states.push(start, Reverse(cost));
+  }
+}

@@ -36,4 +36,9 @@ impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for DLS<S, D> {}
+impl<S: State, D: Decision<S>> Search<S> for DLS<S, D> {
+  fn restart_from(&mut self, start: S) {
+    self.states.clear();
+    self.states.push((Ok(start), 0));
+  }
+}

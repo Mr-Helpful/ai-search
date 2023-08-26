@@ -32,4 +32,9 @@ impl<S: State, D: Decision<S>> Iterator for BFS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for BFS<S, D> {}
+impl<S: State, D: Decision<S>> Search<S> for BFS<S, D> {
+  fn restart_from(&mut self, start: S) {
+    self.states.clear();
+    self.states.push_back(Ok(start));
+  }
+}
