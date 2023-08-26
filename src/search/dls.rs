@@ -1,7 +1,7 @@
 use super::{Decision, Search, State};
 
 pub struct DLS<S: State, D> {
-  states: Vec<(Result<S, S::ResultError>, usize)>,
+  states: Vec<(Result<S, S::Error>, usize)>,
   actions_for: D,
   limit: usize,
 }
@@ -13,7 +13,7 @@ impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
     let (result, depth) = self.states.pop()?;
     let state = match result {
       Ok(state) => state,
-      Err(e) => return Some(Err(e.into())),
+      Err(_) => return Some(result),
     };
 
     if depth >= self.limit {
@@ -29,7 +29,7 @@ impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
       .actions_for
       .actions(observation)
       .into_iter()
-      .map(|action| (state.result(&action), depth + 1));
+      .map(|action| (state.result(&action).map_err(S::Error::from), depth + 1));
 
     self.states.extend(actions);
     Some(Ok(state))
