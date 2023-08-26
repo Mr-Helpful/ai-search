@@ -6,6 +6,24 @@ pub struct DLS<S: State, D> {
   limit: usize,
 }
 
+impl<S: State, D> DLS<S, D> {
+  pub fn new(start: S, actions_for: D, limit: usize) -> Self {
+    Self {
+      states: vec![(Ok(start), 0)],
+      actions_for,
+      limit,
+    }
+  }
+
+  pub fn set_limit(&mut self, start: S, limit: usize)
+  where
+    D: Decision<S>,
+  {
+    self.limit = limit;
+    self.restart_from(start);
+  }
+}
+
 impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
   type Item = Result<S, S::Error>;
 

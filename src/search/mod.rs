@@ -4,6 +4,7 @@ mod bfs;
 mod dfs;
 mod dls;
 mod greedy;
+mod idfs;
 mod uniform;
 pub use bfs::BFS;
 pub use dfs::DFS;
