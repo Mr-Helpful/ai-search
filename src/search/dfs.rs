@@ -1,11 +1,11 @@
 use super::{Decision, Search, State};
 
-pub struct DFS<S: State, D> {
+pub struct Dfs<S: State, D> {
   states: Vec<Result<S, S::Error>>,
   actions_for: D,
 }
 
-impl<S: State, D: Decision<S>> Iterator for DFS<S, D> {
+impl<S: State, D: Decision<S>> Iterator for Dfs<S, D> {
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
@@ -31,7 +31,7 @@ impl<S: State, D: Decision<S>> Iterator for DFS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for DFS<S, D> {
+impl<S: State, D: Decision<S>> Search<S> for Dfs<S, D> {
   fn restart_from(&mut self, start: S) {
     self.states.clear();
     self.states.push(Ok(start));

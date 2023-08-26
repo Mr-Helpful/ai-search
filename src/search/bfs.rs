@@ -1,12 +1,12 @@
 use super::{Decision, Search, State};
 use std::collections::VecDeque;
 
-pub struct BFS<S: State, D> {
+pub struct Bfs<S: State, D> {
   states: VecDeque<Result<S, S::Error>>,
   actions_for: D,
 }
 
-impl<S: State, D: Decision<S>> Iterator for BFS<S, D> {
+impl<S: State, D: Decision<S>> Iterator for Bfs<S, D> {
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
@@ -32,7 +32,7 @@ impl<S: State, D: Decision<S>> Iterator for BFS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for BFS<S, D> {
+impl<S: State, D: Decision<S>> Search<S> for Bfs<S, D> {
   fn restart_from(&mut self, start: S) {
     self.states.clear();
     self.states.push_back(Ok(start));

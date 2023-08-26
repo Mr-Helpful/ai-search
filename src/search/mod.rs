@@ -6,9 +6,9 @@ mod dls;
 mod greedy;
 mod idfs;
 mod uniform;
-pub use bfs::BFS;
-pub use dfs::DFS;
-pub use dls::DLS;
+pub use bfs::Bfs;
+pub use dfs::Dfs;
+pub use dls::Dls;
 pub use greedy::Greedy;
 pub use uniform::Uniform;
 

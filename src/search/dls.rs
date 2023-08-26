@@ -1,12 +1,12 @@
 use super::{Decision, Search, State};
 
-pub struct DLS<S: State, D> {
+pub struct Dls<S: State, D> {
   states: Vec<(Result<S, S::Error>, usize)>,
   actions_for: D,
   limit: usize,
 }
 
-impl<S: State, D> DLS<S, D> {
+impl<S: State, D> Dls<S, D> {
   pub fn new(start: S, actions_for: D, limit: usize) -> Self {
     Self {
       states: vec![(Ok(start), 0)],
@@ -24,7 +24,7 @@ impl<S: State, D> DLS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
+impl<S: State, D: Decision<S>> Iterator for Dls<S, D> {
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
@@ -54,7 +54,7 @@ impl<S: State, D: Decision<S>> Iterator for DLS<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for DLS<S, D> {
+impl<S: State, D: Decision<S>> Search<S> for Dls<S, D> {
   fn restart_from(&mut self, start: S) {
     self.states.clear();
     self.states.push((Ok(start), 0));
