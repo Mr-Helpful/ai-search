@@ -2,6 +2,6 @@ pub mod cost;
 pub mod decision;
 pub mod search;
 pub mod state;
-use cost::StateCost;
+use cost::{StateCost, StateHeuristic};
 use decision::Decision;
 use state::State;
