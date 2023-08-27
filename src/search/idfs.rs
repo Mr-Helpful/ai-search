@@ -1,9 +1,8 @@
 use super::{Decision, Dls, Search, State};
 
 pub struct Idfs<S: State, D> {
-  start: S,
-  limit: usize,
   search: Dls<S, D>,
+  start: S,
 }
 
 impl<S: State, D: Decision<S>> Iterator for Idfs<S, D>
@@ -19,8 +18,10 @@ where
         return result;
       }
 
-      self.limit += 1;
-      self.search.set_limit(self.start.clone(), self.limit);
+      let set_result = self.search.increment_limit(self.start.clone());
+      if let Err(state_error) = set_result {
+        return Some(Err(state_error));
+      }
     }
   }
 }
@@ -29,9 +30,8 @@ impl<S: State, D: Decision<S>> Search<S> for Idfs<S, D>
 where
   S: Clone,
 {
-  fn restart_from(&mut self, start: S) {
-    self.start = start;
-    self.limit = 0;
-    self.search.set_limit(self.start.clone(), self.limit);
+  fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
+    self.search.restart_from(start.clone())?;
+    Ok(())
   }
 }

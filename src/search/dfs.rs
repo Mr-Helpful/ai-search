@@ -32,8 +32,9 @@ impl<S: State, D: Decision<S>> Iterator for Dfs<S, D> {
 }
 
 impl<S: State, D: Decision<S>> Search<S> for Dfs<S, D> {
-  fn restart_from(&mut self, start: S) {
+  fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
     self.states.push(Ok(start));
+    Ok(())
   }
 }

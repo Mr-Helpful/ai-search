@@ -33,8 +33,9 @@ impl<S: State, D: Decision<S>> Iterator for Bfs<S, D> {
 }
 
 impl<S: State, D: Decision<S>> Search<S> for Bfs<S, D> {
-  fn restart_from(&mut self, start: S) {
+  fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
     self.states.push_back(Ok(start));
+    Ok(())
   }
 }

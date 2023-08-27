@@ -6,16 +6,15 @@ pub struct Uniform<S: State, D, C: StateCost<S>>
 where
   S: Hash + Eq,
 {
-  states: PriorityQueue<S, Reverse<C::Cost>>,
+  states: PriorityQueue<S, Reverse<Option<C::Cost>>>,
   actions_for: D,
-  node_cost: C,
+  action_cost: C,
 }
 
-impl<S, D, C> Iterator for Uniform<S, D, C>
+impl<S: State, D, C: StateCost<S>> Iterator for Uniform<S, D, C>
 where
-  S: State + Hash + Eq,
+  S: Hash + Eq,
   D: Decision<S>,
-  C: StateCost<S>,
 {
   type Item = Result<S, S::Error>;
 
@@ -30,10 +29,13 @@ where
       .actions_for
       .actions(observation)
       .into_iter()
-      .filter_map(|action| state.result(&action).ok())
-      .map(|state| {
-        let cost = self.node_cost.cost(&state);
-        (state, Reverse(path_cost.clone() + cost))
+      .filter_map(|action| {
+        let new_state = state.result(&action).ok()?;
+        let actn_cost = self.action_cost.cost(&action);
+        let cost = path_cost
+          .clone()
+          .map_or(actn_cost.clone(), |c| c + actn_cost);
+        Some((new_state, Reverse(Some(cost))))
       });
 
     self.states.extend(actions);
@@ -45,9 +47,9 @@ impl<S: State, D: Decision<S>, C: StateCost<S>> Search<S> for Uniform<S, D, C>
 where
   S: Hash + Eq,
 {
-  fn restart_from(&mut self, start: S) {
+  fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
-    let cost = self.node_cost.cost(&start);
-    self.states.push(start, Reverse(cost));
+    self.states.push(start, Reverse(None));
+    Ok(())
   }
 }
