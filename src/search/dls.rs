@@ -46,7 +46,7 @@ impl<S: State, D: Decision<S>> Iterator for Dls<S, D> {
 
     let actions = self
       .actions_for
-      .actions(observation)
+      .actions(&observation)
       .into_iter()
       .map(|action| (state.result(&action).map_err(S::Error::from), depth + 1));
 

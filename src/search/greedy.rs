@@ -28,11 +28,11 @@ where
 
     let actions = self
       .actions_for
-      .actions(observation)
+      .actions(&observation)
       .into_iter()
       .filter_map(|action| {
         let new_state = state.result(&action).ok()?;
-        let value = self.heuristic.value(new_state.observe().ok()?);
+        let value = self.heuristic.value(&new_state.observe().ok()?);
         Some((new_state, Reverse(value)))
       });
 
@@ -47,7 +47,7 @@ where
 {
   fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
-    let cost = self.heuristic.value(start.observe()?);
+    let cost = self.heuristic.value(&start.observe()?);
     self.states.push(start, Reverse(cost));
     Ok(())
   }

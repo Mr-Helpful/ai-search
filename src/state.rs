@@ -28,7 +28,7 @@ pub trait State: Sized {
   type ObserveError;
   /// Returns an observation of the state<br>
   /// This should be used with to determine the next action to take on the state
-  fn observe(&self) -> Result<&Self::Observation, Self::ObserveError>;
+  fn observe(&self) -> Result<Self::Observation, Self::ObserveError>;
 
   /// The error produced whilst attempting to transition to a new state
   type ResultError;

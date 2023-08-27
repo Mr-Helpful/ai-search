@@ -27,7 +27,7 @@ where
 
     let actions = self
       .actions_for
-      .actions(observation)
+      .actions(&observation)
       .into_iter()
       .filter_map(|action| {
         let new_state = state.result(&action).ok()?;

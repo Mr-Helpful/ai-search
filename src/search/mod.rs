@@ -25,6 +25,6 @@ pub trait Search<S: State>: Iterator<Item = Result<S, S::Error>> + Sized {
   fn next_goal(&mut self, goal: impl Copy + Fn(&S::Observation) -> bool) -> Option<S> {
     self
       .filter_map(|item| item.ok())
-      .find(|state| state.observe().map_or(false, goal))
+      .find(|state| state.observe().as_ref().map_or(false, goal))
   }
 }
