@@ -15,12 +15,13 @@ impl<S: State, D> Dls<S, D> {
     }
   }
 
-  pub fn set_limit(&mut self, start: S, limit: usize)
+  pub fn increment_limit(&mut self, start: S) -> Result<(), S::Error>
   where
     D: Decision<S>,
   {
-    self.limit = limit;
-    self.restart_from(start);
+    self.limit += 1;
+    self.restart_from(start)?;
+    Ok(())
   }
 }
 
