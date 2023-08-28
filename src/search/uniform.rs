@@ -1,8 +1,8 @@
-use super::{Decision, Search, State, StateCost};
+use super::{Decision, Search, SearchCost, State};
 use priority_queue::PriorityQueue;
 use std::{cmp::Reverse, hash::Hash};
 
-pub struct Uniform<S: State, D, C: StateCost<S>>
+pub struct Uniform<S: State, D, C: SearchCost<S>>
 where
   S: Hash + Eq,
 {
@@ -11,7 +11,7 @@ where
   action_cost: C,
 }
 
-impl<S: State, D, C: StateCost<S>> Iterator for Uniform<S, D, C>
+impl<S: State, D, C: SearchCost<S>> Iterator for Uniform<S, D, C>
 where
   S: Hash + Eq,
   D: Decision<S>,
@@ -43,7 +43,7 @@ where
   }
 }
 
-impl<S: State, D: Decision<S>, C: StateCost<S>> Search<S> for Uniform<S, D, C>
+impl<S: State, D: Decision<S>, C: SearchCost<S>> Search<S> for Uniform<S, D, C>
 where
   S: Hash + Eq,
 {

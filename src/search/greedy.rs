@@ -1,8 +1,8 @@
-use super::{Decision, Search, State, StateHeuristic};
+use super::{Decision, Search, SearchHeuristic, State};
 use priority_queue::PriorityQueue;
 use std::{cmp::Reverse, hash::Hash};
 
-pub struct Greedy<S: State, D, H: StateHeuristic<S>>
+pub struct Greedy<S: State, D, H: SearchHeuristic<S>>
 where
   S: Hash + Eq,
 {
@@ -15,7 +15,7 @@ impl<S, D, H> Iterator for Greedy<S, D, H>
 where
   S: State + Hash + Eq,
   D: Decision<S>,
-  H: StateHeuristic<S>,
+  H: SearchHeuristic<S>,
 {
   type Item = Result<S, S::Error>;
 
@@ -41,7 +41,7 @@ where
   }
 }
 
-impl<S: State, D: Decision<S>, C: StateHeuristic<S>> Search<S> for Greedy<S, D, C>
+impl<S: State, D: Decision<S>, C: SearchHeuristic<S>> Search<S> for Greedy<S, D, C>
 where
   S: Hash + Eq,
 {

@@ -1,4 +1,4 @@
-use super::{Decision, State, StateCost, StateHeuristic};
+use super::{Decision, SearchCost, SearchHeuristic, State};
 
 mod bfs;
 mod dfs;

@@ -2,17 +2,17 @@ use super::State;
 use paste::paste;
 use std::ops::Add;
 
-pub trait StateCost<S: State> {
+pub trait SearchCost<S: State> {
   type Cost: Ord + Clone + Add<Output = Self::Cost>;
   fn cost(&self, action: &S::Action) -> Self::Cost;
 }
 
-pub trait StateHeuristic<S: State> {
+pub trait SearchHeuristic<S: State> {
   type Cost: Ord + Clone + Add<Output = Self::Cost>;
   fn value(&self, observed: &S::Observation) -> Self::Cost;
 }
 
-impl<S: State, C, F: Fn(&S::Action) -> C> StateCost<S> for F
+impl<S: State, C, F: Fn(&S::Action) -> C> SearchCost<S> for F
 where
   C: Ord + Clone + Add<Output = C>,
 {
@@ -22,7 +22,7 @@ where
   }
 }
 
-impl<S: State, C, F: Fn(&S::Observation) -> C> StateHeuristic<S> for F
+impl<S: State, C, F: Fn(&S::Observation) -> C> SearchHeuristic<S> for F
 where
   C: Ord + Clone + Add<Output = C>,
 {
@@ -52,9 +52,9 @@ macro_rules! impl_add_wrapper {
             }
         }
 
-        impl<S: State, $($t),+> StateCost<S> for ($($t),+)
+        impl<S: State, $($t),+> SearchCost<S> for ($($t),+)
         where
-            $($t: StateCost<S>),+
+            $($t: SearchCost<S>),+
         {
             type Cost = AddWrapper<($($t::Cost),+)>;
             fn cost(&self, action: &S::Action) -> Self::Cost {
@@ -63,9 +63,9 @@ macro_rules! impl_add_wrapper {
             }
         }
 
-        impl<S: State, $($t),+> StateHeuristic<S> for ($($t),+)
+        impl<S: State, $($t),+> SearchHeuristic<S> for ($($t),+)
           where
-            $($t: StateHeuristic<S>),+ {
+            $($t: SearchHeuristic<S>),+ {
             type Cost = AddWrapper<($($t::Cost),+)>;
             fn value(&self, observed: &S::Observation) -> Self::Cost {
                 let ($([< value_ $t:lower >]),+) = self;
