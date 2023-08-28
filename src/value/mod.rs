@@ -2,35 +2,10 @@ use super::State;
 use paste::paste;
 use std::ops::Add;
 
-pub trait SearchCost<S: State> {
-  type Cost: Ord + Clone + Add<Output = Self::Cost>;
-  fn cost(&self, action: &S::Action) -> Self::Cost;
-}
-
-pub trait SearchHeuristic<S: State> {
-  type Cost: Ord + Clone + Add<Output = Self::Cost>;
-  fn value(&self, observed: &S::Observation) -> Self::Cost;
-}
-
-impl<S: State, C, F: Fn(&S::Action) -> C> SearchCost<S> for F
-where
-  C: Ord + Clone + Add<Output = C>,
-{
-  type Cost = C;
-  fn cost(&self, action: &S::Action) -> Self::Cost {
-    self(action)
-  }
-}
-
-impl<S: State, C, F: Fn(&S::Observation) -> C> SearchHeuristic<S> for F
-where
-  C: Ord + Clone + Add<Output = C>,
-{
-  type Cost = C;
-  fn value(&self, observed: &S::Observation) -> Self::Cost {
-    self(observed)
-  }
-}
+mod cost;
+pub use cost::SearchCost;
+mod heuristic;
+pub use heuristic::SearchHeuristic;
 
 /// A wrapper around tuples to allow addition of costs
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]

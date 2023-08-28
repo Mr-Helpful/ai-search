@@ -1,7 +1,7 @@
-pub mod cost;
 pub mod decision;
 pub mod search;
 pub mod state;
-use cost::{SearchCost, SearchHeuristic};
+pub mod value;
 use decision::Decision;
 use state::State;
+use value::{SearchCost, SearchHeuristic};
