@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::{fmt::Debug, marker::PhantomData};
 
 /// A generic implementation of state for search methods.
 ///
@@ -36,6 +36,28 @@ pub trait State: Sized {
   /// This should produce a new state from a reference to this state (i.e. via
   /// `clone`)
   fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError>;
+}
+
+impl<S, Err, Obs, Actn, ObsErr, ResErr, ObsFn, ResFn> State
+  for (S, &ResFn, &ObsFn, PhantomData<(Err, Actn, ResErr)>)
+where
+  Err: Debug + From<ObsErr> + From<ResErr>,
+  ObsFn: Fn(&S) -> Result<Obs, ObsErr>,
+  ResFn: Fn(&S, &Actn) -> Result<S, ResErr>,
+{
+  type Error = Err;
+  type Observation = Obs;
+  type Action = Actn;
+  type ObserveError = ObsErr;
+  type ResultError = ResErr;
+
+  fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
+    (self.2)(&self.0)
+  }
+
+  fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError> {
+    Ok(((self.1)(&self.0, action)?, self.1, self.2, PhantomData))
+  }
 }
 
 struct DepthState<S> {
