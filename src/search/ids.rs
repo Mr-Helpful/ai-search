@@ -1,11 +1,11 @@
 use super::{Decision, Dls, Search, State};
 
-pub struct Idfs<S: State, D> {
+pub struct Ids<S: State, D> {
   search: Dls<S, D>,
   start: S,
 }
 
-impl<S: State, D: Decision<S>> Iterator for Idfs<S, D>
+impl<S: State, D: Decision<S>> Iterator for Ids<S, D>
 where
   S: Clone,
 {
@@ -26,7 +26,7 @@ where
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for Idfs<S, D>
+impl<S: State, D: Decision<S>> Search<S> for Ids<S, D>
 where
   S: Clone,
 {
