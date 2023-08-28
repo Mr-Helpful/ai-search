@@ -3,8 +3,8 @@
 ## Introduction
 
 This is a WIP package that implements some pretty common AI search methods.
-I've mostly created this to support a few other projects I'm working on and have found that
-I commonly need these types of algorithms.
+I've mostly created as I've commonly found I need some of these algorithms in other projects
+I've been working on.
 
 ## Current Algorithms
 
