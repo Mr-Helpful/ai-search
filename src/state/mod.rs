@@ -2,14 +2,13 @@ use std::{fmt::Debug, marker::PhantomData};
 
 /// A generic implementation of state for search methods.
 ///
-/// We seperate out getting all applicable actions and picking a specific
-/// action here to allow search methods to keep track of the actions taken so
-/// far and limit the actions that can be taken.
+/// We make decisions on the state based on observations of the state, to allow
+/// for environments that are not fully observable (i.e. a poker game where we
+/// cannot see the other players cards).
 ///
 /// States can be thought of as similar to nodes on a graph, with the actions
-/// representing edges all with a weight of 1. We also look to solve the
-/// slightly reduced problem of finding any path to a goal state, rather than
-/// the shortest path.
+/// representing edges. We also look to solve the slightly reduced problem of
+/// finding any path to a goal state, rather than the shortest path.
 pub trait State: Sized {
   /// A supertype for all errors thrown during state generation<br>
   /// All errors should be convertable into this type

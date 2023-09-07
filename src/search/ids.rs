@@ -1,5 +1,9 @@
 use super::{Decision, Dls, Search, State};
 
+/// An Iterative deepening search.
+///
+/// This search will perform a depth first search up to a given depth, then
+/// restart with a deeper depth. This will continue until a goal state is found.
 pub struct Ids<S: State, D> {
   search: Dls<S, D>,
   start: S,

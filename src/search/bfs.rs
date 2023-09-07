@@ -1,6 +1,10 @@
 use super::{Decision, Search, State};
 use std::collections::VecDeque;
 
+/// A Breadth first traversal of possible states.
+///
+/// Will only explore states at a given depth after all states at the previous
+/// depth have been explored.
 pub struct Bfs<S: State, D> {
   states: VecDeque<Result<S, S::Error>>,
   actions_for: D,

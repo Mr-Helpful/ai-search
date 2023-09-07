@@ -1,5 +1,8 @@
 use super::{Decision, Search, State};
 
+/// A Depth first traversal of possible states, up to a given depth.
+///
+/// As we give a limit to the depth of the search, we can avoid infinite loops.
 pub struct Dls<S: State, D> {
   states: Vec<(Result<S, S::Error>, usize)>,
   actions_for: D,

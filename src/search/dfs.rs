@@ -1,5 +1,8 @@
 use super::{Decision, Search, State};
 
+/// A Depth first traversal of possible states.
+///
+/// Will explore paths of states until a dead end is reached, then back track.
 pub struct Dfs<S: State, D> {
   states: Vec<Result<S, S::Error>>,
   actions_for: D,

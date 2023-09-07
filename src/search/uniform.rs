@@ -2,6 +2,9 @@ use super::{Decision, Search, SearchCost, State};
 use priority_queue::PriorityQueue;
 use std::{cmp::Reverse, hash::Hash};
 
+/// A Uniform cost traversal of possible states.
+///
+/// Will explore states with the lowest accumulated path cost first.
 pub struct Uniform<S: State, D, C: SearchCost<S>>
 where
   S: Hash + Eq,

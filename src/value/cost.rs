@@ -1,6 +1,9 @@
 use super::State;
 use std::ops::Add;
 
+/// A cost function for a state.
+///
+/// This is used to determine the path cost to a state.
 pub trait SearchCost<S: State> {
   type Cost: Ord + Clone + Add<Output = Self::Cost>;
   fn cost(&self, action: &S::Action) -> Self::Cost;

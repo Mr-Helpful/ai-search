@@ -12,6 +12,11 @@ pub use dls::Dls;
 pub use greedy::Greedy;
 pub use uniform::Uniform;
 
+/// A generic search algorithm should act as an traversal over some tree of
+/// states, with the possiblity of failure upon expanding each state.
+/// A search algorithm should also be able to restart from a given state.
+/// Using the implemented traversal, we can provide implementations for the
+/// next valid and goal state.
 pub trait Search<S: State>: Iterator<Item = Result<S, S::Error>> + Sized {
   /// Restarts the search from the given state
   fn restart_from(&mut self, start: S) -> Result<(), S::Error>;

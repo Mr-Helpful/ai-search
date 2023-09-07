@@ -1,5 +1,10 @@
 use super::State;
 
+/// A state that tracks its depth.
+///
+/// This is useful for:
+/// - Depth limited search
+/// - Games (where depth is used to determine the player)
 pub struct DepthState<S> {
   state: S,
   depth: usize,

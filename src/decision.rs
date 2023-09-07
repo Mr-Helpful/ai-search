@@ -2,6 +2,7 @@ use super::State;
 use dashmap::DashSet;
 use std::hash::Hash;
 
+/// Possible actions for a state.
 pub trait Decision<S: State> {
   type Actions: IntoIterator<Item = S::Action>;
   fn actions(&self, observation: &S::Observation) -> Self::Actions;

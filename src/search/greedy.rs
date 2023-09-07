@@ -2,6 +2,9 @@ use super::{Decision, Search, SearchHeuristic, State};
 use priority_queue::PriorityQueue;
 use std::{cmp::Reverse, hash::Hash};
 
+/// A Greedy traversal of possible states.
+///
+/// Will explore states with the lowest heuristic value first.
 pub struct Greedy<S: State, D, H: SearchHeuristic<S>>
 where
   S: Hash + Eq,
