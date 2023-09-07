@@ -10,6 +10,18 @@ pub struct DepthState<S> {
   depth: usize,
 }
 
+impl<S> From<S> for DepthState<S> {
+  fn from(state: S) -> Self {
+    Self { state, depth: 0 }
+  }
+}
+
+impl<S> DepthState<S> {
+  pub fn state(self) -> S {
+    self.state
+  }
+}
+
 impl<S: State> State for DepthState<S> {
   type Error = S::Error;
   type Observation = (S::Observation, usize);
