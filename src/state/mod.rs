@@ -1,4 +1,9 @@
-use std::{fmt::Debug, marker::PhantomData};
+use std::fmt::Debug;
+
+mod depth;
+pub use depth::DepthState;
+mod graph;
+pub use graph::GraphState;
 
 /// A generic implementation of state for search methods.
 ///
@@ -18,16 +23,24 @@ pub trait State: Sized {
   /// This should be a (potentially) restricted view on the state
   type Observation;
 
-  /// A type for actions that can be taken on this state<br>
-  /// We should be able to transition from this state with anything satisfying
-  /// the action type
-  type Action;
-
   /// The error produced whilst attempting to observe the state
   type ObserveError;
   /// Returns an observation of the state<br>
   /// This should be used with to determine the next action to take on the state
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError>;
+
+  /// A type for actions that can be taken on this state<br>
+  /// We should be able to transition from this state with anything satisfying
+  /// the action type
+  type Action;
+
+  /// A type for collections of Actions for this state<br>
+  /// This represents all valid Actions that can be taken on this state
+  type ActionIter: IntoIterator<Item = Self::Action>;
+
+  /// Returns all valid actions that can be taken on this state<br>
+  /// This should be used with `observe` to determine the next action to take
+  fn actions(&self) -> Self::ActionIter;
 
   /// The error produced whilst attempting to transition to a new state
   type ResultError;
@@ -36,28 +49,3 @@ pub trait State: Sized {
   /// `clone`)
   fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError>;
 }
-
-impl<S, Err, Obs, Actn, ObsErr, ResErr, ObsFn, ResFn> State
-  for (S, &ResFn, &ObsFn, PhantomData<(Err, Actn, ResErr)>)
-where
-  Err: Debug + From<ObsErr> + From<ResErr>,
-  ObsFn: Fn(&S) -> Result<Obs, ObsErr>,
-  ResFn: Fn(&S, &Actn) -> Result<S, ResErr>,
-{
-  type Error = Err;
-  type Observation = Obs;
-  type Action = Actn;
-  type ObserveError = ObsErr;
-  type ResultError = ResErr;
-
-  fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
-    (self.2)(&self.0)
-  }
-
-  fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError> {
-    Ok(((self.1)(&self.0, action)?, self.1, self.2, PhantomData))
-  }
-}
-
-mod depth;
-pub use depth::DepthState;

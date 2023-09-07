@@ -26,11 +26,16 @@ impl<S: State> State for DepthState<S> {
   type Error = S::Error;
   type Observation = (S::Observation, usize);
   type Action = S::Action;
+  type ActionIter = S::ActionIter;
   type ObserveError = S::ObserveError;
   type ResultError = S::ResultError;
 
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
     Ok((self.state.observe()?, self.depth))
+  }
+
+  fn actions(&self) -> Self::ActionIter {
+    self.state.actions()
   }
 
   fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError> {
