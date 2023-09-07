@@ -10,6 +10,17 @@ pub struct Bfs<S: State, D> {
   actions_for: D,
 }
 
+impl<S: State, D> Bfs<S, D> {
+  pub fn new(start: S, actions_for: D) -> Self {
+    let mut states = VecDeque::new();
+    states.push_back(Ok(start));
+    Self {
+      states,
+      actions_for,
+    }
+  }
+}
+
 impl<S: State, D: Decision<S>> Iterator for Bfs<S, D> {
   type Item = Result<S, S::Error>;
 

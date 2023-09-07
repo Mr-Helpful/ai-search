@@ -9,6 +9,18 @@ pub struct Ids<S: State, D> {
   start: S,
 }
 
+impl<S: State, D: Decision<S>> Ids<S, D>
+where
+  S: Clone,
+{
+  pub fn new(start: S, actions_for: D) -> Self {
+    Self {
+      search: Dls::new(start.clone(), actions_for, 0),
+      start,
+    }
+  }
+}
+
 impl<S: State, D: Decision<S>> Iterator for Ids<S, D>
 where
   S: Clone,

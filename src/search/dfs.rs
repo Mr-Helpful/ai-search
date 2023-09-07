@@ -8,6 +8,15 @@ pub struct Dfs<S: State, D> {
   actions_for: D,
 }
 
+impl<S: State, D> Dfs<S, D> {
+  pub fn new(start: S, actions_for: D) -> Self {
+    Self {
+      states: vec![Ok(start)],
+      actions_for,
+    }
+  }
+}
+
 impl<S: State, D: Decision<S>> Iterator for Dfs<S, D> {
   type Item = Result<S, S::Error>;
 

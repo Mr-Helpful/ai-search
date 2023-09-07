@@ -14,6 +14,23 @@ where
   heuristic: H,
 }
 
+impl<S: State, D, H: SearchHeuristic<S>> Greedy<S, D, H>
+where
+  S: Hash + Eq,
+{
+  pub fn new(start: S, actions_for: D, heuristic: H) -> Self {
+    let mut states = PriorityQueue::new();
+    let obs = start.observe().map_err(S::Error::from).unwrap();
+    let cost = heuristic.value(&obs);
+    states.push(start, Reverse(cost));
+    Self {
+      states,
+      actions_for,
+      heuristic,
+    }
+  }
+}
+
 impl<S, D, H> Iterator for Greedy<S, D, H>
 where
   S: State + Hash + Eq,

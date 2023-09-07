@@ -14,6 +14,21 @@ where
   action_cost: C,
 }
 
+impl<S: State, D, C: SearchCost<S>> Uniform<S, D, C>
+where
+  S: Hash + Eq,
+{
+  pub fn new(start: S, actions_for: D, action_cost: C) -> Self {
+    let mut states = PriorityQueue::new();
+    states.push(start, Reverse(None));
+    Self {
+      states,
+      actions_for,
+      action_cost,
+    }
+  }
+}
+
 impl<S: State, D, C: SearchCost<S>> Iterator for Uniform<S, D, C>
 where
   S: Hash + Eq,
