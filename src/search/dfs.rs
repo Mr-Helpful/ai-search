@@ -1,23 +1,21 @@
-use super::{Decision, Search, State};
+use super::{Search, State};
 
 /// A Depth first traversal of possible states.
 ///
 /// Will explore paths of states until a dead end is reached, then back track.
-pub struct Dfs<S: State, D> {
+pub struct Dfs<S: State> {
   states: Vec<Result<S, S::Error>>,
-  actions_for: D,
 }
 
-impl<S: State, D> Dfs<S, D> {
-  pub fn new(start: S, actions_for: D) -> Self {
+impl<S: State> Dfs<S> {
+  pub fn new(start: S) -> Self {
     Self {
       states: vec![Ok(start)],
-      actions_for,
     }
   }
 }
 
-impl<S: State, D: Decision<S>> Iterator for Dfs<S, D> {
+impl<S: State> Iterator for Dfs<S> {
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
@@ -27,14 +25,8 @@ impl<S: State, D: Decision<S>> Iterator for Dfs<S, D> {
       Err(_) => return Some(result),
     };
 
-    let observation = match state.observe() {
-      Ok(observation) => observation,
-      Err(e) => return Some(Err(e.into())),
-    };
-
-    let actions = self
-      .actions_for
-      .actions(&observation)
+    let actions = state
+      .actions()
       .into_iter()
       .map(|action| state.result(&action).map_err(|e| e.into()));
 
@@ -43,7 +35,7 @@ impl<S: State, D: Decision<S>> Iterator for Dfs<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for Dfs<S, D> {
+impl<S: State> Search<S> for Dfs<S> {
   fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
     self.states.push(Ok(start));

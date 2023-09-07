@@ -1,67 +1,57 @@
-use super::{Decision, Search, SearchCost, State};
+use super::{Search, State};
+use crate::value::SearchCost;
 use priority_queue::PriorityQueue;
 use std::{cmp::Reverse, hash::Hash};
 
 /// A Uniform cost traversal of possible states.
 ///
 /// Will explore states with the lowest accumulated path cost first.
-pub struct Uniform<S: State, D, C: SearchCost<S>>
+pub struct Uniform<S: State, C: SearchCost<S>>
 where
   S: Hash + Eq,
 {
   states: PriorityQueue<S, Reverse<Option<C::Cost>>>,
-  actions_for: D,
   action_cost: C,
 }
 
-impl<S: State, D, C: SearchCost<S>> Uniform<S, D, C>
+impl<S: State, C: SearchCost<S>> Uniform<S, C>
 where
   S: Hash + Eq,
 {
-  pub fn new(start: S, actions_for: D, action_cost: C) -> Self {
+  pub fn new(start: S, action_cost: C) -> Self {
     let mut states = PriorityQueue::new();
     states.push(start, Reverse(None));
     Self {
       states,
-      actions_for,
       action_cost,
     }
   }
 }
 
-impl<S: State, D, C: SearchCost<S>> Iterator for Uniform<S, D, C>
+impl<S: State, C: SearchCost<S>> Iterator for Uniform<S, C>
 where
   S: Hash + Eq,
-  D: Decision<S>,
 {
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
     let (state, Reverse(path_cost)) = self.states.pop()?;
-    let observation = match state.observe() {
-      Ok(observation) => observation,
-      Err(e) => return Some(Err(e.into())),
-    };
 
-    let actions = self
-      .actions_for
-      .actions(&observation)
-      .into_iter()
-      .filter_map(|action| {
-        let new_state = state.result(&action).ok()?;
-        let actn_cost = self.action_cost.cost(&action);
-        let cost = path_cost
-          .clone()
-          .map_or(actn_cost.clone(), |c| c + actn_cost);
-        Some((new_state, Reverse(Some(cost))))
-      });
+    let actions = state.actions().into_iter().filter_map(|action| {
+      let new_state = state.result(&action).ok()?;
+      let actn_cost = self.action_cost.cost(&action);
+      let cost = path_cost
+        .clone()
+        .map_or(actn_cost.clone(), |c| c + actn_cost);
+      Some((new_state, Reverse(Some(cost))))
+    });
 
     self.states.extend(actions);
     Some(Ok(state))
   }
 }
 
-impl<S: State, D: Decision<S>, C: SearchCost<S>> Search<S> for Uniform<S, D, C>
+impl<S: State, C: SearchCost<S>> Search<S> for Uniform<S, C>
 where
   S: Hash + Eq,
 {

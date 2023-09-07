@@ -1,27 +1,23 @@
-use super::{Decision, Search, State};
+use super::{Search, State};
 use std::collections::VecDeque;
 
 /// A Breadth first traversal of possible states.
 ///
 /// Will only explore states at a given depth after all states at the previous
 /// depth have been explored.
-pub struct Bfs<S: State, D> {
+pub struct Bfs<S: State> {
   states: VecDeque<Result<S, S::Error>>,
-  actions_for: D,
 }
 
-impl<S: State, D> Bfs<S, D> {
-  pub fn new(start: S, actions_for: D) -> Self {
+impl<S: State> Bfs<S> {
+  pub fn new(start: S) -> Self {
     let mut states = VecDeque::new();
     states.push_back(Ok(start));
-    Self {
-      states,
-      actions_for,
-    }
+    Self { states }
   }
 }
 
-impl<S: State, D: Decision<S>> Iterator for Bfs<S, D> {
+impl<S: State> Iterator for Bfs<S> {
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
@@ -31,14 +27,8 @@ impl<S: State, D: Decision<S>> Iterator for Bfs<S, D> {
       Err(_) => return Some(result),
     };
 
-    let observation = match state.observe() {
-      Ok(observation) => observation,
-      Err(e) => return Some(Err(e.into())),
-    };
-
-    let actions = self
-      .actions_for
-      .actions(&observation)
+    let actions = state
+      .actions()
       .into_iter()
       .map(|action| state.result(&action).map_err(|e| e.into()));
 
@@ -47,7 +37,7 @@ impl<S: State, D: Decision<S>> Iterator for Bfs<S, D> {
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for Bfs<S, D> {
+impl<S: State> Search<S> for Bfs<S> {
   fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
     self.states.push_back(Ok(start));

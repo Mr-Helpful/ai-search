@@ -1,27 +1,27 @@
-use super::{Decision, Dls, Search, State};
+use super::{Dls, Search, State};
 
 /// An Iterative deepening search.
 ///
 /// This search will perform a depth first search up to a given depth, then
 /// restart with a deeper depth. This will continue until a goal state is found.
-pub struct Ids<S: State, D> {
-  search: Dls<S, D>,
+pub struct Ids<S: State> {
+  search: Dls<S>,
   start: S,
 }
 
-impl<S: State, D: Decision<S>> Ids<S, D>
+impl<S: State> Ids<S>
 where
   S: Clone,
 {
-  pub fn new(start: S, actions_for: D) -> Self {
+  pub fn new(start: S) -> Self {
     Self {
-      search: Dls::new(start.clone(), actions_for, 0),
+      search: Dls::new(start.clone(), 0),
       start,
     }
   }
 }
 
-impl<S: State, D: Decision<S>> Iterator for Ids<S, D>
+impl<S: State> Iterator for Ids<S>
 where
   S: Clone,
 {
@@ -42,7 +42,7 @@ where
   }
 }
 
-impl<S: State, D: Decision<S>> Search<S> for Ids<S, D>
+impl<S: State> Search<S> for Ids<S>
 where
   S: Clone,
 {
