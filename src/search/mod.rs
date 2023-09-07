@@ -10,6 +10,7 @@ pub use bfs::Bfs;
 pub use dfs::Dfs;
 pub use dls::Dls;
 pub use greedy::Greedy;
+pub use ids::Ids;
 pub use uniform::Uniform;
 
 /// A generic search algorithm should act as an traversal over some tree of
