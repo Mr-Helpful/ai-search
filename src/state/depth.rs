@@ -20,18 +20,21 @@ impl<S> DepthState<S> {
   pub fn state(self) -> S {
     self.state
   }
+  pub fn depth(&self) -> usize {
+    self.depth
+  }
 }
 
 impl<S: State> State for DepthState<S> {
   type Error = S::Error;
-  type Observation = (S::Observation, usize);
+  type Observation = S::Observation;
   type Action = S::Action;
   type ActionIter = S::ActionIter;
   type ObserveError = S::ObserveError;
   type ResultError = S::ResultError;
 
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
-    Ok((self.state.observe()?, self.depth))
+    self.state.observe()
   }
 
   fn actions(&self) -> Self::ActionIter {
