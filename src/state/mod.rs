@@ -6,6 +6,8 @@ mod graph;
 pub use graph::GraphState;
 mod pathcost;
 pub use pathcost::PathCostState;
+mod history;
+pub use history::HistoryState;
 
 /// A generic implementation of state for search methods.
 ///
