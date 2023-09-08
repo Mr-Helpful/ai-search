@@ -1,11 +1,13 @@
 use crate::state::State;
 
+mod astar;
 mod bfs;
 mod dfs;
 mod dls;
 mod greedy;
 mod ids;
 mod uniform;
+pub use astar::Astar;
 pub use bfs::Bfs;
 pub use dfs::Dfs;
 pub use dls::Dls;
