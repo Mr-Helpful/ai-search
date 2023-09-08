@@ -21,18 +21,21 @@ impl<S: State, C: SearchCost<S>> PathCostState<S, C> {
   pub fn state(self) -> S {
     self.state
   }
+  pub fn path_cost(&self) -> &C::Cost {
+    &self.path_cost
+  }
 }
 
 impl<S: State, C: SearchCost<S> + Clone> State for PathCostState<S, C> {
   type Error = S::Error;
-  type Observation = (S::Observation, C::Cost);
+  type Observation = S::Observation;
   type Action = S::Action;
   type ActionIter = S::ActionIter;
   type ObserveError = S::ObserveError;
   type ResultError = S::ResultError;
 
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
-    Ok((self.state.observe()?, self.path_cost.clone()))
+    self.state.observe()
   }
 
   fn actions(&self) -> Self::ActionIter {
