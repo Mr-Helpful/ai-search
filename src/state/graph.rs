@@ -2,6 +2,9 @@ use super::State;
 use dashmap::DashSet;
 use std::hash::Hash;
 
+/// A state that only expands if it has not been seen before.
+///
+/// This is useful for graphs that have cycles and commonly repeated states.
 pub struct GraphState<S: State> {
   state: S,
   seen: DashSet<S::Observation>,
