@@ -35,19 +35,4 @@ pub trait Search<S: State>: Iterator<Item = Result<S, S::Error>> + Sized {
       .filter_map(|item| item.ok())
       .find(|state| state.observe().as_ref().map_or(false, &goal))
   }
-
-  /// Returns the states visited up to the first goal state generated
-  fn history(&mut self, goal: impl Fn(&S::Observation) -> bool) -> Vec<S> {
-    let mut history = vec![];
-
-    while let Some(state) = self.next_valid() {
-      let is_goal = state.observe().as_ref().map_or(false, &goal);
-      history.push(state);
-      if is_goal {
-        break;
-      }
-    }
-
-    history
-  }
 }
