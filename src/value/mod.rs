@@ -8,7 +8,7 @@ mod heuristic;
 pub use heuristic::SearchHeuristic;
 
 /// A wrapper around tuples to allow addition of costs
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Default)]
 pub struct AddWrapper<T>(T);
 
 /// allows us to generically add tuples of costs
