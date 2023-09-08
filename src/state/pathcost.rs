@@ -1,7 +1,6 @@
 use crate::prelude::SearchCost;
 
 use super::State;
-;
 
 /// A state that tracks the path cost to the current state.
 pub struct PathCostState<S: State, C: SearchCost<S>> {
