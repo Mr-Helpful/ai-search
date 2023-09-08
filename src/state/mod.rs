@@ -4,6 +4,8 @@ mod depth;
 pub use depth::DepthState;
 mod graph;
 pub use graph::GraphState;
+mod path;
+pub use path::PathState;
 
 /// A generic implementation of state for search methods.
 ///
