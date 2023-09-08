@@ -10,7 +10,7 @@ pub struct Uniform<S: State, C: SearchCost<S>>
 where
   S: Hash + Eq,
 {
-  states: PriorityQueue<S, Reverse<Option<C::Cost>>>,
+  states: PriorityQueue<S, Reverse<C::Cost>>,
   action_cost: C,
 }
 
@@ -20,7 +20,7 @@ where
 {
   pub fn new(start: S, action_cost: C) -> Self {
     let mut states = PriorityQueue::new();
-    states.push(start, Reverse(None));
+    states.push(start, Reverse(Default::default()));
     Self {
       states,
       action_cost,
@@ -40,10 +40,7 @@ where
     let actions = state.actions().into_iter().filter_map(|action| {
       let new_state = state.result(&action).ok()?;
       let actn_cost = self.action_cost.cost(&action);
-      let cost = path_cost
-        .clone()
-        .map_or(actn_cost.clone(), |c| c + actn_cost);
-      Some((new_state, Reverse(Some(cost))))
+      Some((new_state, Reverse(path_cost.clone() + actn_cost)))
     });
 
     self.states.extend(actions);
@@ -57,7 +54,7 @@ where
 {
   fn restart_from(&mut self, start: S) -> Result<(), S::Error> {
     self.states.clear();
-    self.states.push(start, Reverse(None));
+    self.states.push(start, Reverse(Default::default()));
     Ok(())
   }
 }

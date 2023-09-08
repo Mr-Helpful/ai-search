@@ -35,7 +35,7 @@ where
   type Item = Result<S, S::Error>;
 
   fn next(&mut self) -> Option<Self::Item> {
-    let (state, Reverse(_)) = self.states.pop()?;
+    let (state, _) = self.states.pop()?;
 
     let actions = state.actions().into_iter().filter_map(|action| {
       let new_state = state.result(&action).ok()?;
