@@ -34,12 +34,7 @@ impl<S: State> Iterator for Dls<S> {
       Err(e) => return Some(Err(e)),
     };
 
-    let (_, depth) = match state.observe() {
-      Ok(observation) => observation,
-      Err(e) => return Some(Err(e.into())),
-    };
-
-    if depth >= self.limit {
+    if state.depth() >= self.limit {
       return Some(Ok(state.state()));
     }
 
