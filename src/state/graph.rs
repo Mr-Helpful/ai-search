@@ -10,6 +10,18 @@ pub struct GraphState<S: State> {
   seen: DashSet<S::Observation>,
 }
 
+impl<S: State> From<S> for GraphState<S>
+where
+  S::Observation: Hash + Eq,
+{
+  fn from(state: S) -> Self {
+    Self {
+      state,
+      seen: DashSet::<S::Observation>::new(),
+    }
+  }
+}
+
 impl<S: State> State for GraphState<S>
 where
   S::Observation: Hash + Eq + Clone,
