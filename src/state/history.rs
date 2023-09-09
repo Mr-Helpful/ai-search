@@ -1,10 +1,19 @@
 use super::State;
+use derivative::Derivative;
 
 /// A state that tracks all actions taken.
 ///
 /// This is useful for both debugging and explainability.
+#[derive(Clone, Debug, Derivative)]
+#[derivative(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct HistoryState<S: State> {
   state: S,
+  #[derivative(
+    PartialEq = "ignore",
+    PartialOrd = "ignore",
+    Ord = "ignore",
+    Hash = "ignore"
+  )]
   history: Vec<S::Action>,
 }
 

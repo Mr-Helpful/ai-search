@@ -1,11 +1,25 @@
-use crate::prelude::SearchCost;
-
 use super::State;
+use crate::prelude::SearchCost;
+use derivative::Derivative;
 
 /// A state that tracks the path cost to the current state.
+#[derive(Clone, Debug, Default, Derivative)]
+#[derivative(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PathCostState<S: State, C: SearchCost<S>> {
   state: S,
+  #[derivative(
+    PartialEq = "ignore",
+    PartialOrd = "ignore",
+    Ord = "ignore",
+    Hash = "ignore"
+  )]
   actn_cost: C,
+  #[derivative(
+    PartialEq = "ignore",
+    PartialOrd = "ignore",
+    Ord = "ignore",
+    Hash = "ignore"
+  )]
   path_cost: C::Cost,
 }
 

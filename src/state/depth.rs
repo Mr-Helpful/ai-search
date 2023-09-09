@@ -1,12 +1,21 @@
 use super::State;
+use derivative::Derivative;
 
 /// A state that tracks its depth.
 ///
 /// This is useful for:
 /// - Depth limited search
 /// - Games (where depth is used to determine the player)
+#[derive(Clone, Copy, Debug, Derivative)]
+#[derivative(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct DepthState<S> {
   state: S,
+  #[derivative(
+    PartialEq = "ignore",
+    PartialOrd = "ignore",
+    Ord = "ignore",
+    Hash = "ignore"
+  )]
   depth: usize,
 }
 
