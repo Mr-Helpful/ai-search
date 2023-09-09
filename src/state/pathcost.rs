@@ -1,6 +1,7 @@
 use super::State;
 use crate::prelude::SearchCost;
 use derivative::Derivative;
+use std::fmt::Display;
 
 /// A state that tracks the path cost to the current state.
 #[derive(Clone, Debug, Default, Derivative)]
@@ -31,12 +32,21 @@ impl<S: State, C: SearchCost<S>> PathCostState<S, C> {
       path_cost: Default::default(),
     }
   }
+}
 
-  pub fn state(self) -> S {
-    self.state
+impl<S: State + Display, C: SearchCost<S>> Display for PathCostState<S, C>
+where
+  C::Cost: Display,
+{
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    writeln!(f, "PathCostState (path cost {}):", self.path_cost)?;
+    write!(f, "{}", self.state)
   }
-  pub fn path_cost(&self) -> &C::Cost {
-    &self.path_cost
+}
+
+impl<S: State, C: SearchCost<S>> PathCostState<S, C> {
+  pub fn path_cost(&self) -> C::Cost {
+    self.path_cost.clone()
   }
 }
 

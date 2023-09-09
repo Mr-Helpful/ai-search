@@ -15,9 +15,10 @@ impl<S: State> From<S> for LoggingState<S> {
   }
 }
 
-impl<S: State> LoggingState<S> {
-  pub fn state(self) -> S {
-    self.state
+impl<S: State + Display> Display for LoggingState<S> {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    writeln!(f, "LoggingState:")?;
+    write!(f, "{}", self.state)
   }
 }
 

@@ -1,5 +1,6 @@
 use super::State;
 use derivative::Derivative;
+use std::fmt::Display;
 
 /// A state that tracks all actions taken.
 ///
@@ -23,6 +24,15 @@ impl<S: State> From<S> for HistoryState<S> {
       state,
       history: vec![],
     }
+  }
+}
+
+impl<S: State + Display> Display for HistoryState<S> {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    let n_actns = self.history.len();
+    let plural = if n_actns > 1 { "s" } else { "" };
+    writeln!(f, "HistoryState ({} action{}):", n_actns, plural)?;
+    write!(f, "{}", self.state)
   }
 }
 

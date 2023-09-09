@@ -1,5 +1,6 @@
 use super::State;
 use derivative::Derivative;
+use std::fmt::Display;
 
 /// A state that tracks its depth.
 ///
@@ -22,6 +23,13 @@ pub struct DepthState<S> {
 impl<S> From<S> for DepthState<S> {
   fn from(state: S) -> Self {
     Self { state, depth: 0 }
+  }
+}
+
+impl<S: Display> Display for DepthState<S> {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    writeln!(f, "DepthState (depth {}):", self.depth)?;
+    write!(f, "{}", self.state)
   }
 }
 

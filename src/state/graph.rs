@@ -1,7 +1,7 @@
 use super::State;
 use dashmap::DashSet;
 use derivative::Derivative;
-use std::hash::Hash;
+use std::{fmt::Display, hash::Hash};
 
 /// A state that only expands if it has not been seen before.
 ///
@@ -31,6 +31,16 @@ where
       state,
       seen: DashSet::<S::Observation>::new(),
     }
+  }
+}
+
+impl<S: State + Display> Display for GraphState<S>
+where
+  S::Observation: Hash + Eq,
+{
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    writeln!(f, "GraphState:")?;
+    write!(f, "{}", self.state)
   }
 }
 
