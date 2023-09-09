@@ -8,6 +8,8 @@ mod pathcost;
 pub use pathcost::PathCostState;
 mod history;
 pub use history::HistoryState;
+mod logging;
+pub use logging::LoggingState;
 
 /// A generic implementation of state for search methods.
 ///
