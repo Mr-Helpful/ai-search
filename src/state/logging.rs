@@ -4,7 +4,7 @@ use std::fmt::Display;
 /// A state that tracks all actions taken.
 ///
 /// This is useful for both debugging and explainability.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct LoggingState<S: State> {
   state: S,
 }

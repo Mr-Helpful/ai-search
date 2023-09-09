@@ -4,7 +4,7 @@ use derivative::Derivative;
 /// A state that tracks all actions taken.
 ///
 /// This is useful for both debugging and explainability.
-#[derive(Clone, Debug, Derivative)]
+#[derive(Clone, Debug, Default, Derivative)]
 #[derivative(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct HistoryState<S: State> {
   state: S,

@@ -6,7 +6,7 @@ use derivative::Derivative;
 /// This is useful for:
 /// - Depth limited search
 /// - Games (where depth is used to determine the player)
-#[derive(Clone, Copy, Debug, Derivative)]
+#[derive(Clone, Copy, Debug, Default, Derivative)]
 #[derivative(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct DepthState<S> {
   state: S,
