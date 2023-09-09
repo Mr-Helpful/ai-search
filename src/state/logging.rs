@@ -49,7 +49,7 @@ where
       .state
       .result(action)
       .map(|state| {
-        println!("> State: {}", state);
+        println!("> State:\n{}", state);
         LoggingState { state }
       })
       .map_err(|e| {
