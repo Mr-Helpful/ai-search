@@ -55,3 +55,12 @@ pub trait State: Sized {
   /// `clone`)
   fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError>;
 }
+
+/// A wrapper for states that allows for the state to be extracted
+pub trait StateWrapper<S: State> {
+  /// Extracts the state from the wrapper
+  fn unwrap(self) -> S;
+
+  /// Replaces the state in the wrapper with a new state
+  fn replace(&mut self, state: S) -> S;
+}

@@ -1,4 +1,4 @@
-use super::State;
+use super::{State, StateWrapper};
 use derivative::Derivative;
 use std::fmt::Display;
 
@@ -34,9 +34,6 @@ impl<S: Display> Display for DepthState<S> {
 }
 
 impl<S> DepthState<S> {
-  pub fn state(self) -> S {
-    self.state
-  }
   pub fn depth(&self) -> usize {
     self.depth
   }
@@ -63,5 +60,15 @@ impl<S: State> State for DepthState<S> {
       state,
       depth: self.depth + 1,
     })
+  }
+}
+
+impl<S: State> StateWrapper<S> for DepthState<S> {
+  fn unwrap(self) -> S {
+    self.state
+  }
+
+  fn replace(&mut self, state: S) -> S {
+    std::mem::replace(&mut self.state, state)
   }
 }

@@ -1,4 +1,4 @@
-use super::State;
+use super::{State, StateWrapper};
 use crate::prelude::SearchCost;
 use derivative::Derivative;
 use std::fmt::Display;
@@ -72,5 +72,15 @@ impl<S: State, C: SearchCost<S> + Clone> State for PathCostState<S, C> {
       actn_cost: self.actn_cost.clone(),
       path_cost: self.path_cost.clone() + self.actn_cost.cost(action),
     })
+  }
+}
+
+impl<S: State, C: SearchCost<S> + Clone> StateWrapper<S> for PathCostState<S, C> {
+  fn unwrap(self) -> S {
+    self.state
+  }
+
+  fn replace(&mut self, state: S) -> S {
+    std::mem::replace(&mut self.state, state)
   }
 }

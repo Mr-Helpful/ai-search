@@ -1,4 +1,4 @@
-use super::State;
+use super::{State, StateWrapper};
 use derivative::Derivative;
 use std::fmt::Display;
 
@@ -37,9 +37,6 @@ impl<S: State + Display> Display for HistoryState<S> {
 }
 
 impl<S: State> HistoryState<S> {
-  pub fn state(self) -> S {
-    self.state
-  }
   pub fn history(&self) -> &[S::Action] {
     &self.history
   }
@@ -71,5 +68,15 @@ where
       .state
       .result(action)
       .map(|state| HistoryState { state, history })
+  }
+}
+
+impl<S: State> StateWrapper<S> for HistoryState<S> {
+  fn unwrap(self) -> S {
+    self.state
+  }
+
+  fn replace(&mut self, state: S) -> S {
+    std::mem::replace(&mut self.state, state)
   }
 }

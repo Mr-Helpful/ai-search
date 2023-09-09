@@ -1,4 +1,4 @@
-use super::State;
+use super::{State, StateWrapper};
 use std::fmt::Display;
 
 /// A state that tracks all actions taken.
@@ -56,5 +56,15 @@ where
         println!("> Failed!");
         e
       })
+  }
+}
+
+impl<S: State> StateWrapper<S> for LoggingState<S> {
+  fn unwrap(self) -> S {
+    self.state
+  }
+
+  fn replace(&mut self, state: S) -> S {
+    std::mem::replace(&mut self.state, state)
   }
 }

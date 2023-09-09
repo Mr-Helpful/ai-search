@@ -1,4 +1,4 @@
-use super::State;
+use super::{State, StateWrapper};
 use dashmap::DashSet;
 use derivative::Derivative;
 use std::{fmt::Display, hash::Hash};
@@ -73,5 +73,18 @@ where
       state,
       seen: self.seen.clone(),
     })
+  }
+}
+
+impl<S: State> StateWrapper<S> for GraphState<S>
+where
+  S::Observation: Hash + Eq,
+{
+  fn unwrap(self) -> S {
+    self.state
+  }
+
+  fn replace(&mut self, state: S) -> S {
+    std::mem::replace(&mut self.state, state)
   }
 }
