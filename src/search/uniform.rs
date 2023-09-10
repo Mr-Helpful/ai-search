@@ -52,7 +52,7 @@ where
     });
 
     self.states.extend(actions);
-    Some(Ok(state.unwrap_state()))
+    Some(Ok(state.unwrap()))
   }
 }
 

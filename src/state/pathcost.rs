@@ -76,11 +76,11 @@ impl<S: State, C: SearchCost<S> + Clone> State for PathCostState<S, C> {
 }
 
 impl<S: State, C: SearchCost<S> + Clone> StateWrapper<S> for PathCostState<S, C> {
-  fn unwrap_state(self) -> S {
+  fn unwrap(self) -> S {
     self.state
   }
 
-  fn replace_state(&mut self, state: S) -> S {
+  fn replace(&mut self, state: S) -> S {
     std::mem::replace(&mut self.state, state)
   }
 }

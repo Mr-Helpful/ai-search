@@ -64,11 +64,11 @@ impl<S: State> State for DepthState<S> {
 }
 
 impl<S: State> StateWrapper<S> for DepthState<S> {
-  fn unwrap_state(self) -> S {
+  fn unwrap(self) -> S {
     self.state
   }
 
-  fn replace_state(&mut self, state: S) -> S {
+  fn replace(&mut self, state: S) -> S {
     std::mem::replace(&mut self.state, state)
   }
 }
