@@ -29,7 +29,7 @@ where
   fn from(state: S) -> Self {
     Self {
       state,
-      seen: Rc::new(DashSet::<S::Observation>::new()),
+      seen: Rc::new(DashSet::new()),
     }
   }
 }
