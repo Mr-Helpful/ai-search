@@ -1,7 +1,7 @@
 use super::{State, StateWrapper};
 use dashmap::DashSet;
 use derivative::Derivative;
-use std::{fmt::Display, hash::Hash};
+use std::{fmt::Display, hash::Hash, rc::Rc};
 
 /// A state that only expands if it has not been seen before.
 ///
@@ -19,7 +19,7 @@ where
     Ord = "ignore",
     Hash = "ignore"
   )]
-  seen: DashSet<S::Observation>,
+  seen: Rc<DashSet<S::Observation>>,
 }
 
 impl<S: State> From<S> for GraphState<S>
@@ -29,7 +29,7 @@ where
   fn from(state: S) -> Self {
     Self {
       state,
-      seen: DashSet::<S::Observation>::new(),
+      seen: Rc::new(DashSet::<S::Observation>::new()),
     }
   }
 }
