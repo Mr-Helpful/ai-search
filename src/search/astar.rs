@@ -60,7 +60,7 @@ where
     });
 
     self.states.extend(actions);
-    Some(Ok(state.unwrap()))
+    Some(Ok(state.unwrap_state()))
   }
 }
 

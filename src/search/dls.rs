@@ -35,7 +35,7 @@ impl<S: State> Iterator for Dls<S> {
     };
 
     if state.depth() >= self.limit {
-      return Some(Ok(state.unwrap()));
+      return Some(Ok(state.unwrap_state()));
     }
 
     let actions = state
@@ -44,7 +44,7 @@ impl<S: State> Iterator for Dls<S> {
       .map(|action| state.result(&action).map_err(S::Error::from));
 
     self.states.extend(actions);
-    Some(Ok(state.unwrap()))
+    Some(Ok(state.unwrap_state()))
   }
 }
 

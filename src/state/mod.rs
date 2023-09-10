@@ -59,8 +59,8 @@ pub trait State: Sized {
 /// A wrapper for states that allows for the state to be extracted
 pub trait StateWrapper<S: State> {
   /// Extracts the state from the wrapper
-  fn unwrap(self) -> S;
+  fn unwrap_state(self) -> S;
 
   /// Replaces the state in the wrapper with a new state
-  fn replace(&mut self, state: S) -> S;
+  fn replace_state(&mut self, state: S) -> S;
 }

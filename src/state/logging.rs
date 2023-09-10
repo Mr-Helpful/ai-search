@@ -60,11 +60,11 @@ where
 }
 
 impl<S: State> StateWrapper<S> for LoggingState<S> {
-  fn unwrap(self) -> S {
+  fn unwrap_state(self) -> S {
     self.state
   }
 
-  fn replace(&mut self, state: S) -> S {
+  fn replace_state(&mut self, state: S) -> S {
     std::mem::replace(&mut self.state, state)
   }
 }
