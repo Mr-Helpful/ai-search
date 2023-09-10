@@ -1,6 +1,8 @@
 use super::{Search, State};
-use crate::state::{PathCostState, StateWrapper};
-use crate::value::{SearchCost, SearchHeuristic};
+use crate::{
+  value::{SearchCost, SearchHeuristic},
+  wrappers::{PathCostState, StateWrapper},
+};
 use priority_queue::PriorityQueue;
 use std::{cmp::Reverse, hash::Hash, ops::Add};
 

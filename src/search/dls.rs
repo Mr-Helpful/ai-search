@@ -1,5 +1,5 @@
 use super::{Search, State};
-use crate::state::{DepthState, StateWrapper};
+use crate::wrappers::{DepthState, StateWrapper};
 
 /// A Depth first traversal of possible states, up to a given depth.
 ///
