@@ -30,7 +30,7 @@ impl<S: State> From<S> for HistoryState<S> {
 impl<S: State + Display> Display for HistoryState<S> {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     let n_actns = self.history.len();
-    let plural = if n_actns > 1 { "s" } else { "" };
+    let plural = if n_actns == 1 { "" } else { "s" };
     writeln!(f, "HistoryState ({} action{}):", n_actns, plural)?;
     write!(f, "{}", self.state)
   }
