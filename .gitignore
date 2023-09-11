@@ -1,2 +1,6 @@
+# Standard Rust ignores
 /target
 /Cargo.lock
+
+# We're using `cargo flamegraph` for profiling
+flamegraph.svg
