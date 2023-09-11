@@ -6,16 +6,21 @@ This is a WIP package that implements some pretty common AI search methods.
 I've mostly created as I've commonly found I need some of these algorithms in other projects
 I've been working on.
 
-## Current Algorithms
+## Algorithms
 
-### Uninformed Searches
+### Uninformed Search
 
-- Breadth First Search
-- Depth First Search
-- Iterative Deepening Search
+- [X] Breadth First Search
+- [X] Depth First Search
+- [X] Iterative Deepening Search
 
-### Informed Searches
+### Informed Search
 
-- Uniform Cost Search
-- Greedy Best First Search
-- A* Search
+- [X] Uniform Cost Search
+- [X] Greedy Best First Search
+- [X] A* Search
+
+### Games
+
+- [ ] Minimax Search
+- [ ] Alpha Beta Pruning
