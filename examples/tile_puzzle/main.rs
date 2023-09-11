@@ -2,8 +2,8 @@ extern crate ai_search;
 use ai_search::prelude::*;
 use itertools::Itertools;
 
-mod puzzle;
-use puzzle::{Direction, TilePuzzle};
+mod problem;
+use problem::{Direction, TilePuzzle};
 
 const N_ACTIONS: usize = 30;
 
