@@ -1,4 +1,4 @@
-use super::{State, StateWrapper};
+use super::{helpers::OptionIter, State, StateWrapper};
 use dashmap::DashSet;
 use derivative::Derivative;
 use std::{fmt::Display, hash::Hash, rc::Rc};
@@ -51,7 +51,7 @@ where
   type Error = S::Error;
   type Observation = S::Observation;
   type Action = S::Action;
-  type ActionIter = Vec<Self::Action>;
+  type ActionIter = OptionIter<<S::ActionIter as IntoIterator>::IntoIter>;
 
   type ObserveError = S::ObserveError;
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
@@ -61,9 +61,9 @@ where
   fn actions(&self) -> Self::ActionIter {
     // We only produce actions if we have not seen this state before
     if self.observe().map_or(false, |obs| self.seen.insert(obs)) {
-      self.state.actions().into_iter().collect()
+      OptionIter::Some(self.state.actions().into_iter())
     } else {
-      Vec::new()
+      OptionIter::None
     }
   }
 
