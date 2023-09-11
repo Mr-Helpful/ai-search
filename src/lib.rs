@@ -1,3 +1,4 @@
+pub mod games;
 pub mod prelude;
 pub mod search;
 pub mod state;

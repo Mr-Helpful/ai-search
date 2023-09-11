@@ -1,3 +1,8 @@
+//! Algorithms for searching a state space.
+//!
+//! We define a search algorithm as an iterator over a state space, with the
+//! possibility of returning an `Err` when a state fails to expand.
+
 use crate::state::State;
 
 mod astar;
