@@ -4,12 +4,14 @@ use itertools::Itertools;
 
 mod problem;
 use problem::{Direction, TilePuzzle};
+use rand::{rngs::StdRng, SeedableRng};
 
 const N_ACTIONS: usize = 30;
 
 fn main() {
   println!("Tile Puzzle Example ({} shuffles)", N_ACTIONS);
-  let puzzle = TilePuzzle::shuffled(N_ACTIONS);
+  let mut rng = StdRng::seed_from_u64(0);
+  let puzzle = TilePuzzle::shuffled(&mut rng, N_ACTIONS);
   println!("{}", puzzle);
   let state = HistoryState::from(GraphState::from(puzzle));
   println!("{}", state);

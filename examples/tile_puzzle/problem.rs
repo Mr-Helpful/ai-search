@@ -56,8 +56,7 @@ impl TilePuzzle {
     self.board == TilePuzzle::default().board
   }
 
-  pub fn shuffle(&mut self, n: usize) {
-    let mut rng = rand::thread_rng();
+  pub fn shuffle(&mut self, rng: &mut (impl Rng + ?Sized), n: usize) {
     for _ in 0..n {
       let actions = self.actions();
       let action = actions[rng.gen_range(0..actions.len())];
@@ -65,9 +64,9 @@ impl TilePuzzle {
     }
   }
 
-  pub fn shuffled(n: usize) -> Self {
+  pub fn shuffled(rng: &mut (impl Rng + ?Sized), n: usize) -> Self {
     let mut puzzle = Self::default();
-    puzzle.shuffle(n);
+    puzzle.shuffle(rng, n);
     puzzle
   }
 }
