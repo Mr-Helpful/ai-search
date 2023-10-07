@@ -5,6 +5,52 @@ use std::{
   ops::{Bound, RangeBounds},
 };
 
+/** A wrapper struct to enable comparison of bounds
+ * @warn bounds don't really have a good concept of comparison
+ */
+pub struct ComparableBound<O>(Bound<O>);
+
+impl<O: PartialEq + Debug> PartialEq<O> for ComparableBound<O> {
+  /** @todo I'm pretty sure this is wrong */
+  fn eq(&self, other: &O) -> bool {
+    match &self.0 {
+      Bound::Unbounded => false,
+      Bound::Included(x) => x == other,
+      Bound::Excluded(x) => x != other,
+    }
+  }
+}
+
+impl<O: PartialOrd + Debug> PartialOrd<O> for ComparableBound<O> {
+  /** @todo This might be wrong too, honestly just return None */
+  fn partial_cmp(&self, other: &O) -> Option<std::cmp::Ordering> {
+    use std::cmp::Ordering::*;
+    match &self.0 {
+      Bound::Unbounded => None,
+      Bound::Included(x) => x.partial_cmp(other),
+      Bound::Excluded(x) if x > other => Some(Less),
+      Bound::Excluded(x) if x < other => Some(Greater),
+      Bound::Excluded(_) => None,
+    }
+  }
+
+  fn gt(&self, other: &O) -> bool {
+    match &self.0 {
+      Bound::Unbounded => true,
+      Bound::Included(x) => other > x,
+      Bound::Excluded(x) => other >= x,
+    }
+  }
+
+  fn lt(&self, other: &O) -> bool {
+    match &self.0 {
+      Bound::Unbounded => true,
+      Bound::Included(x) => other < x,
+      Bound::Excluded(x) => other <= x,
+    }
+  }
+}
+
 fn ge_bound<O: Ord>(bound: &Bound<O>, item: &O) -> bool {
   match bound {
     Bound::Unbounded => true,
