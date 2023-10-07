@@ -9,7 +9,7 @@ use std::marker::PhantomData;
 pub struct MiniMax<S: State, H: SearchHeuristic<S>> {
   pub state_value: H,
   pub depth: usize,
-  pub n_players: usize,
+  pub players: usize,
   _state: PhantomData<S>,
 }
 
@@ -18,7 +18,7 @@ impl<S: State, H: SearchHeuristic<S>> MiniMax<S, H> {
     Self {
       state_value,
       depth,
-      n_players,
+      players,
       _state: PhantomData,
     }
   }
@@ -51,7 +51,7 @@ where
       self.minimax_recursive(state, actions)
     });
 
-    if turn % self.n_players == 0 {
+    if turn % self.players == 0 {
       paths.max_by_key(|(_, value)| value.clone())
     } else {
       paths.min_by_key(|(_, value)| value.clone())
