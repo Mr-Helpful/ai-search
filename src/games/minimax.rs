@@ -6,15 +6,15 @@
 use crate::{prelude::SearchHeuristic, state::State};
 use std::marker::PhantomData;
 
-pub struct MiniMax<S: State, H: SearchHeuristic<S>> {
+pub struct MiniMax<S, H> {
   pub state_value: H,
   pub depth: usize,
   pub players: usize,
   _state: PhantomData<S>,
 }
 
-impl<S: State, H: SearchHeuristic<S>> MiniMax<S, H> {
-  pub fn new(state_value: H, depth: usize, n_players: usize) -> Self {
+impl<S, H> MiniMax<S, H> {
+  pub fn new(state_value: H, depth: usize, players: usize) -> Self {
     Self {
       state_value,
       depth,
