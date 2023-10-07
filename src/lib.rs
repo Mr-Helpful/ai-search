@@ -1,3 +1,12 @@
+#![warn(missing_docs)]
+//!
+//!
+//!
+//! <br>
+//!
+//! Methods and Traits for AI Search.
+//!
+
 pub mod games;
 pub mod prelude;
 pub mod search;
