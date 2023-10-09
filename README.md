@@ -1,5 +1,7 @@
 # AI Search Algorithms
 
+<!-- cargo-sync-readme start -->
+
 ## Introduction
 
 This is a WIP package that implements some pretty common AI search methods.
@@ -24,3 +26,5 @@ I've been working on.
 
 - [ ] Minimax Search
 - [ ] Alpha Beta Pruning
+
+<!-- cargo-sync-readme end -->
