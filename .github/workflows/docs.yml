@@ -1,0 +1,41 @@
+name: Documentation Hooks
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - docs
+      - main
+
+    paths:
+      - '**.rs'
+
+jobs:
+  sync-readme:
+    name: Synchronise `README.md` with `cargo sync-readme`
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install `cargo` command
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install `cargo-sync-readme` tool
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: cargo-sync-readme
+          version: ^1.1.0
+
+      - name: Synchronise `README.md` with `cargo sync-readme`
+        run: cargo sync-readme
+
+      - name: Push changes to repository
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: README.md
+          commit_message: 'docs: Synchronises `README.md` with `cargo sync-readme`'
+          commit_user_name: readme-sync[bot]
