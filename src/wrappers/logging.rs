@@ -5,17 +5,17 @@ use std::fmt::Display;
 ///
 /// This is useful for both debugging and explainability.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct LoggingState<S: State> {
+pub struct LoggingState<S> {
   state: S,
 }
 
-impl<S: State> From<S> for LoggingState<S> {
+impl<S> From<S> for LoggingState<S> {
   fn from(state: S) -> Self {
     Self { state }
   }
 }
 
-impl<S: State + Display> Display for LoggingState<S> {
+impl<S: Display> Display for LoggingState<S> {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     writeln!(f, "LoggingState:")?;
     write!(f, "{}", self.state)
@@ -25,7 +25,7 @@ impl<S: State + Display> Display for LoggingState<S> {
 impl<S: State> State for LoggingState<S>
 where
   S: Display,
-  S::Action: Clone + Display,
+  S::Action: Display,
 {
   type Error = S::Error;
   type Observation = S::Observation;
@@ -59,7 +59,11 @@ where
   }
 }
 
-impl<S: State> StateWrapper<S> for LoggingState<S> {
+impl<S: State> StateWrapper<S> for LoggingState<S>
+where
+  S: Display,
+  S::Action: Display,
+{
   fn unwrap(self) -> S {
     self.state
   }

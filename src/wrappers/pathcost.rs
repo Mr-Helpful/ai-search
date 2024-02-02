@@ -32,6 +32,10 @@ impl<S: State, C: SearchCost<S>> PathCostState<S, C> {
       path_cost: Default::default(),
     }
   }
+
+  pub fn path_cost(&self) -> C::Cost {
+    self.path_cost.clone()
+  }
 }
 
 impl<S: State + Display, C: SearchCost<S>> Display for PathCostState<S, C>
@@ -41,12 +45,6 @@ where
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     writeln!(f, "PathCostState (path cost {}):", self.path_cost)?;
     write!(f, "{}", self.state)
-  }
-}
-
-impl<S: State, C: SearchCost<S>> PathCostState<S, C> {
-  pub fn path_cost(&self) -> C::Cost {
-    self.path_cost.clone()
   }
 }
 
