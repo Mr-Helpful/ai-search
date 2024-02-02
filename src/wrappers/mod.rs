@@ -14,7 +14,7 @@ mod logging;
 pub use logging::LoggingState;
 
 /// A wrapper for states that allows for the state to be extracted
-pub trait StateWrapper<S: State> {
+pub trait StateWrapper<S: State>: State {
   /// Extracts the state from the wrapper
   fn unwrap(self) -> S;
 

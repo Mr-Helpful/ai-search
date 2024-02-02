@@ -26,16 +26,16 @@ impl<S> From<S> for DepthState<S> {
   }
 }
 
+impl<S> DepthState<S> {
+  pub fn depth(&self) -> usize {
+    self.depth
+  }
+}
+
 impl<S: Display> Display for DepthState<S> {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     writeln!(f, "DepthState (depth {}):", self.depth)?;
     write!(f, "{}", self.state)
-  }
-}
-
-impl<S> DepthState<S> {
-  pub fn depth(&self) -> usize {
-    self.depth
   }
 }
 
