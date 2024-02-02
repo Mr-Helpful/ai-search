@@ -46,18 +46,18 @@ where
 
 impl<S: State> State for GraphState<S>
 where
-  S::Observation: Hash + Eq + Clone,
+  S::Observation: Hash + Eq,
 {
   type Error = S::Error;
-  type Observation = S::Observation;
-  type Action = S::Action;
-  type ActionIter = OptionIter<<S::ActionIter as IntoIterator>::IntoIter>;
 
+  type Observation = S::Observation;
   type ObserveError = S::ObserveError;
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
     self.state.observe()
   }
 
+  type Action = S::Action;
+  type ActionIter = OptionIter<<S::ActionIter as IntoIterator>::IntoIter>;
   fn actions(&self) -> Self::ActionIter {
     // We only produce actions if we have not seen this state before
     if self.observe().map_or(false, |obs| self.seen.insert(obs)) {

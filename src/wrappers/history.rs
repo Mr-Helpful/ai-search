@@ -27,6 +27,12 @@ impl<S: State> From<S> for HistoryState<S> {
   }
 }
 
+impl<S: State> HistoryState<S> {
+  pub fn history(&self) -> &[S::Action] {
+    &self.history
+  }
+}
+
 impl<S: State + Display> Display for HistoryState<S> {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     let n_actns = self.history.len();
@@ -36,31 +42,25 @@ impl<S: State + Display> Display for HistoryState<S> {
   }
 }
 
-impl<S: State> HistoryState<S> {
-  pub fn history(&self) -> &[S::Action] {
-    &self.history
-  }
-}
-
 impl<S: State> State for HistoryState<S>
 where
   S::Action: Clone,
 {
   type Error = S::Error;
-  type Observation = S::Observation;
-  type Action = S::Action;
-  type ActionIter = S::ActionIter;
-  type ObserveError = S::ObserveError;
-  type ResultError = S::ResultError;
 
+  type Observation = S::Observation;
+  type ObserveError = S::ObserveError;
   fn observe(&self) -> Result<Self::Observation, Self::ObserveError> {
     self.state.observe()
   }
 
+  type Action = S::Action;
+  type ActionIter = S::ActionIter;
   fn actions(&self) -> Self::ActionIter {
     self.state.actions()
   }
 
+  type ResultError = S::ResultError;
   fn result(&self, action: &Self::Action) -> Result<Self, Self::ResultError> {
     let mut history = self.history.clone();
     history.push(action.clone());
@@ -71,7 +71,10 @@ where
   }
 }
 
-impl<S: State> StateWrapper<S> for HistoryState<S> {
+impl<S: State> StateWrapper<S> for HistoryState<S>
+where
+  S::Action: Clone,
+{
   fn unwrap(self) -> S {
     self.state
   }
